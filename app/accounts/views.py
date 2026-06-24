@@ -5,6 +5,7 @@ from django.contrib.auth.views import LoginView as BaseLoginView
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.views import View
 from django.views.generic import CreateView, TemplateView
 
 from .forms import LoginForm, RegisterForm
@@ -105,10 +106,9 @@ class HomeView(TemplateView):
     template_name = "accounts/home.html"
 
 
-class DeactivateView(TemplateView):
-    """US03: Soft-delete — sets is_active=False, keeps data in the DB."""
-
-    template_name = "accounts/deactivate_confirm.html"
+class DeactivateView(View):
+    """US03: Soft-delete — sets is_active=False, keeps data in the DB.
+    No template needed; called via POST from the dashboard."""
 
     def post(self, request):
         user = request.user

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -106,6 +107,9 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+    {
+        'NAME': 'accounts.validators.validate_password_strength',
+    },
 ]
 
 
@@ -130,6 +134,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Custom User model: email as the unique identifier instead of username.
+AUTH_USER_MODEL = 'accounts.User'
 
 # Named URLs so templates can use {% url 'login' %} instead of hardcoding
 # paths. If the URL pattern changes, these settings keep the templates intact.

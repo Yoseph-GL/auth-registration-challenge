@@ -1,0 +1,54 @@
+# Python runtime
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Django
+media/
+staticfiles/
+
+# Testing & coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local databases
+db.sqlite3
+db.sqlite3-journal
+
+# Tailwind / Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Environment & secrets
+.env
+.env.*
+
+# Docker
+docker-compose.override.yml
+
+# Logs
+logs/
+*.log
+
+# IDEs
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Vim
+*.swp
+*.swo
+*~

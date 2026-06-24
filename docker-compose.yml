@@ -1,0 +1,32 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: auth_challenge
+      POSTGRES_USER: django
+      POSTGRES_PASSWORD: django_secret
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5435:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U django -d auth_challenge"]
+      interval: 5s
+      retries: 5
+      start_period: 10s
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./app:/app
+    ports:
+      - "127.0.0.1:8003:8000"
+    environment:
+      - DATABASE_URL=postgres://django:django_secret@db:5432/auth_challenge
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

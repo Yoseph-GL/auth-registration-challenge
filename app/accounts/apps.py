@@ -6,4 +6,4 @@ class AccountsConfig(AppConfig):
     name = "accounts"
 
     def ready(self):
-        import accounts.signals  # noqa: F401 — register the user_logged_in handler
+        import accounts.signals  # noqa: F401 — registers the user_logged_in signal handler

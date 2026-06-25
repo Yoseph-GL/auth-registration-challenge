@@ -26,8 +26,7 @@ SECRET_KEY = os.environ.get(
 
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 
-# Hosts allowed to serve requests. 0.0.0.0 lets the Docker container
-# receive connections forwarded from the host on port 8003.
+# Allow connections forwarded from the Docker host on port 8003.
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
 
 
@@ -58,8 +57,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # Template directory at the project root — shared layouts like
-        # base.html live here, while app-specific templates stay in each app.
+        # Project-root template directory for shared layouts like base.html.
         'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -78,8 +76,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# PostgreSQL connection. The HOST is the Docker Compose service name
-# 'db', not localhost, because Django runs inside the 'web' container.
+# HOST is the Docker Compose service name 'db', not localhost.
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -128,7 +125,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-# Project-level static files (shared across apps).
+# Shared static files directory.
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # Default primary key field type
@@ -136,16 +133,14 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Custom User model: email as the unique identifier instead of username.
+# Use email as the unique identifier instead of username.
 AUTH_USER_MODEL = 'accounts.User'
 
-# Named URLs so templates can use {% url 'login' %} instead of hardcoding
-# paths. If the URL pattern changes, these settings keep the templates intact.
+# Named URL references keep templates decoupled from URL patterns.
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
 
-# Idle sessions expire after 15 minutes. The timer resets on every request,
-# so active users stay logged in without re-authenticating.
+# 15-minute idle timeout; timer resets on every request.
 SESSION_COOKIE_AGE = 900
 SESSION_SAVE_EVERY_REQUEST = True

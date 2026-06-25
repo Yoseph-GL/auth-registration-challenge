@@ -1,8 +1,4 @@
-/* ==========================================================================
-   Auth Challenge — Styles
-   Dark theme, mobile-first, separation of concerns.
-   All colors are CSS custom properties — tweak them in one place.
-   ========================================================================== */
+/* Auth Challenge — Dark theme, mobile-first. */
 
 :root {
     --bg:            #3f3f46;
@@ -18,7 +14,7 @@
 }
 
 
-/* ---- Reset ------------------------------------------------------------- */
+/* Reset */
 
 *, *::before, *::after {
     box-sizing: border-box;
@@ -27,7 +23,7 @@
 }
 
 
-/* ---- Layout ------------------------------------------------------------ */
+/* Layout */
 
 body {
     font-family: system-ui, -apple-system, sans-serif;
@@ -43,7 +39,7 @@ body {
 }
 
 
-/* ---- Card -------------------------------------------------------------- */
+/* Card */
 
 .card {
     background: var(--card);
@@ -64,7 +60,7 @@ body {
 }
 
 
-/* ---- Form fields ------------------------------------------------------- */
+/* Form fields */
 
 .field {
     margin-bottom: 1rem;
@@ -99,7 +95,7 @@ body {
 }
 
 
-/* ---- Buttons ----------------------------------------------------------- */
+/* Buttons */
 
 .btn {
     width: 100%;
@@ -134,7 +130,7 @@ body {
 }
 
 
-/* ---- Footer text (links below forms) ----------------------------------- */
+/* Footer text */
 
 .footer-text {
     text-align: center;
@@ -153,7 +149,7 @@ body {
 }
 
 
-/* ---- Dashboard (home) ------------------------------------------------- */
+/* Dashboard */
 
 .home-card {
     text-align: center;
@@ -192,7 +188,7 @@ body {
 }
 
 
-/* ---- Flash messages ---------------------------------------------------- */
+/* Flash messages */
 
 .messages {
     margin-bottom: 1.5rem;

@@ -33,15 +33,11 @@ class LoginView(BaseLoginView):
     form_class = LoginForm
     template_name = "accounts/login.html"
 
-    # -- successful login --------------------------------------------------
-
     def form_valid(self, form):
         user = form.get_user()
         LoginAttempt.objects.filter(user=user).delete()
         messages.success(self.request, "Login successful.")
         return super().form_valid(form)
-
-    # -- failed login ------------------------------------------------------
 
     def form_invalid(self, form):
         email = self.request.POST.get("username", "")
@@ -62,14 +58,11 @@ class LoginView(BaseLoginView):
                 "Your account has been blocked for 2 hours due to "
                 "multiple failed login attempts.",
             )
-            # Render with an unbound form so the generic "invalid credentials"
-            # error does not distract from the lockout message.
+            # Unbound form so the generic error doesn't distract from the lockout message.
             return render(
                 self.request, self.template_name, {"form": self.get_form_class()()}
             )
         return super().form_invalid(form)
-
-    # -- pre-form checks (deactivation / existing lockout) ------------------
 
     def dispatch(self, request, *args, **kwargs):
         email = request.POST.get("username", "")

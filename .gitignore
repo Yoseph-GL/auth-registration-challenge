@@ -53,3 +53,9 @@ desktop.ini
 *.swp
 *.swo
 *~
+
+# Project documentation (auto-generated)
+CLAUDE.md
+DEV_GUIDE.md
+ROADMAP.md
+SCHEMA.md

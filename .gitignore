@@ -31,6 +31,7 @@ yarn-error.log
 # Environment & secrets
 .env
 .env.*
+!.env.example
 
 # Docker
 docker-compose.override.yml

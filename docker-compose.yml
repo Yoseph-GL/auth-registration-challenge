@@ -22,8 +22,8 @@ services:
       - ./app:/app
     ports:
       - "127.0.0.1:8003:8000"
-    environment:
-      - DATABASE_URL=postgres://django:django_secret@db:5432/auth_challenge
+    env_file:
+      - ./app/.env
     depends_on:
       db:
         condition: service_healthy

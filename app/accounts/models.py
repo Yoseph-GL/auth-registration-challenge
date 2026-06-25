@@ -3,9 +3,10 @@ from django.db import models
 
 
 class UserManager(BaseUserManager):
-    # Defino el email como campo único para autenticar en lugar del username
+    # Definir el email como campo único para autenticar en lugar del username
 
     def create_user(self, email, password=None, **extra_fields):
+        # Pasar email a minúsculas y hashear password antes de guardar
         if not email:
             raise ValueError("The email field must be set")
         email = self.normalize_email(email)
@@ -22,7 +23,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
-    # Heredo de AbstractUser y elimino username para que el login sea solo con email
+    # Heredar de AbstractUser y eliminar username para que el login sea solo con email
 
     username = None
     first_name = None
@@ -42,7 +43,7 @@ class User(AbstractUser):
 
 
 class LoginAttempt(models.Model):
-    # Guardo cada intento de login para bloquear la cuenta tras 3 fallos en 2 horas
+    # Guardar cada intento de login para bloquear la cuenta tras 3 fallos en 2 horas
 
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="login_attempts"
@@ -56,7 +57,7 @@ class LoginAttempt(models.Model):
 
 
 class UserSession(models.Model):
-    # Relaciono una sola sesión por usuario con OneToOneField para evitar sesiones múltiples
+    # Usar OneToOneField para que cada usuario solo tenga una sesión activa
 
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name="active_session"

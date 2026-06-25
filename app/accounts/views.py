@@ -14,7 +14,7 @@ from .models import LoginAttempt, User
 
 
 class RegisterView(CreateView):
-    # Muestro un mensaje de éxito y redirijo al login cuando el registro es válido
+    # Mostrar mensaje de éxito y redirigir al login cuando el registro es válido
 
     model = User
     form_class = RegisterForm
@@ -28,13 +28,14 @@ class RegisterView(CreateView):
 
 
 class LoginView(BaseLoginView):
-    # Verifico si la cuenta está bloqueada o desactivada antes de permitir el login
+    # Verificar bloqueo y desactivación antes de autenticar
 
     form_class = LoginForm
     template_name = "accounts/login.html"
 
     def form_valid(self, form):
         user = form.get_user()
+        # Limpiar historial de fallos tras un login exitoso para evitar bloqueos falsos
         LoginAttempt.objects.filter(user=user).delete()
         messages.success(self.request, "Login successful.")
         return super().form_valid(form)
@@ -46,6 +47,7 @@ class LoginView(BaseLoginView):
         except User.DoesNotExist:
             return super().form_invalid(form)
 
+        # Registrar este fallo antes de contar el total para aplicar el lockout si es necesario
         LoginAttempt.objects.create(user=user, success=False)
 
         cutoff = timezone.now() - timedelta(hours=2)
@@ -58,13 +60,14 @@ class LoginView(BaseLoginView):
                 "Your account has been blocked for 2 hours due to "
                 "multiple failed login attempts.",
             )
-            # Renderizo un formulario limpio para que el mensaje de bloqueo se lea sin distracción
+            # Mostrar un formulario limpio para que el mensaje de bloqueo se lea sin distracción
             return render(
                 self.request, self.template_name, {"form": self.get_form_class()()}
             )
         return super().form_invalid(form)
 
     def dispatch(self, request, *args, **kwargs):
+        # Bloquear el request desde el inicio si la cuenta está desactivada o en lockout
         email = request.POST.get("username", "")
         if email:
             try:
@@ -100,13 +103,13 @@ class LoginView(BaseLoginView):
 
 
 class HomeView(LoginRequiredMixin, TemplateView):
-    # Página principal después de login con mensaje de bienvenida y opciones de cuenta
+    # Mostrar página principal con bienvenida y opciones de cuenta después del login
 
     template_name = "accounts/home.html"
 
 
 class DeactivateView(View):
-    # Desactivo la cuenta del usuario sin borrar sus datos de la base de datos
+    # Desactivar la cuenta sin borrar los datos del usuario
 
     def post(self, request):
         user = request.user

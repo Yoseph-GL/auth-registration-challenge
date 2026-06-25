@@ -1,16 +1,18 @@
 import os
 from pathlib import Path
 
-# Construyo la ruta base del proyecto para no hardcodear directorios
+# Construir la ruta base del proyecto para no hardcodear directorios
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Fail-fast: forzar crash si no existe la variable en el entorno
 SECRET_KEY = os.environ["SECRET_KEY"]
 
 DEBUG = os.environ.get("DEBUG", "") == "True"
 
-# Agrego los hosts permitidos para desarrollo local y Docker
+# Agregar los hosts permitidos para desarrollo local y Docker
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
 
+# Dejar el admin de Django activo para comandos como createsuperuser
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -36,7 +38,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # Apunto al directorio raíz de templates para compartir layouts como base.html
+        # Apuntar al directorio raíz de templates para compartir layouts
         'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -52,7 +54,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
-# Uso el nombre del servicio Docker en lugar de localhost para conectar a la base de datos
+# Conectar al servicio Docker; los defaults permiten correr sin Docker
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -65,6 +67,7 @@ DATABASES = {
 }
 
 
+# Tres validadores estándar de Django más el mío que exige letra y número
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -92,19 +95,19 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-# Agrego el directorio static raíz para los archivos CSS e imágenes
+# Agregar el directorio static para los archivos CSS e imágenes
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Le digo a Django que use mi modelo User personalizado con email
+# Decirle a Django que use mi modelo User personalizado con email
 AUTH_USER_MODEL = 'accounts.User'
 
-# Defino URLs por nombre para no hardcodear rutas en los templates
+# Definir URLs por nombre para no hardcodear rutas en los templates
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
 
-# Configuro la sesión para que expire a los 15 minutos de inactividad
+# Configurar la sesión para que expire a los 15 minutos de inactividad
 SESSION_COOKIE_AGE = 900
 SESSION_SAVE_EVERY_REQUEST = True

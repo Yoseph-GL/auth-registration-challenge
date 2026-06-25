@@ -1,4 +1,4 @@
-# Expongo la aplicación como callable ASGI para el servidor web
+# Exponer la aplicación como callable ASGI para el servidor web
 import os
 
 from django.core.asgi import get_asgi_application

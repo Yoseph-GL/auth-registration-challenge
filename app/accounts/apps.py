@@ -6,5 +6,5 @@ class AccountsConfig(AppConfig):
     name = "accounts"
 
     def ready(self):
-        # Conecto las señales para que Django ejecute el handler cuando el usuario inicia sesión
+        # Conectar las señales para que Django ejecute el handler al iniciar sesión
         import accounts.signals  # noqa: F401

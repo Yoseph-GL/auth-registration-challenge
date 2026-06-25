@@ -5,7 +5,7 @@ from .models import User
 
 
 class RegisterForm(forms.ModelForm):
-    # Pido email, nombre completo y contraseña con confirmación para el registro
+    # Pedir email, nombre completo y contraseña con confirmación para el registro
 
     password = forms.CharField(widget=forms.PasswordInput, label="Password")
     password_confirm = forms.CharField(
@@ -17,7 +17,7 @@ class RegisterForm(forms.ModelForm):
         fields = ["email", "full_name"]
 
     def clean_full_name(self):
-        # Reviso que el nombre completo tenga al menos 5 caracteres antes de guardar
+        # Validar que el nombre completo tenga al menos 5 caracteres
         full_name = self.cleaned_data.get("full_name", "")
         if len(full_name.strip()) < 5:
             raise forms.ValidationError(
@@ -26,7 +26,7 @@ class RegisterForm(forms.ModelForm):
         return full_name.strip()
 
     def clean_password(self):
-        # Dejo que Django valide la contraseña con las reglas definidas en settings
+        # Dejar que Django valide la contraseña con las reglas de settings
         password = self.cleaned_data.get("password")
         if password:
             from django.contrib.auth.password_validation import validate_password
@@ -34,6 +34,7 @@ class RegisterForm(forms.ModelForm):
         return password
 
     def clean(self):
+        # Revisar que las dos contraseñas coincidan antes de guardar
         cleaned = super().clean()
         pw1 = cleaned.get("password")
         pw2 = cleaned.get("password_confirm")
@@ -43,6 +44,7 @@ class RegisterForm(forms.ModelForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
+        # Hashear la contraseña antes de guardar para no guardarla en texto plano
         user.set_password(self.cleaned_data["password"])
         if commit:
             user.save()
@@ -50,7 +52,7 @@ class RegisterForm(forms.ModelForm):
 
 
 class LoginForm(AuthenticationForm):
-    # Cambio el campo username por email para que el login use el correo
+    # Cambiar el campo username por email para autenticar con correo
 
     username = forms.EmailField(
         label="Email",

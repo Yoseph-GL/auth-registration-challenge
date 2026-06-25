@@ -4,7 +4,7 @@ services:
     environment:
       POSTGRES_DB: auth_challenge
       POSTGRES_USER: django
-      POSTGRES_PASSWORD: django_secret
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:

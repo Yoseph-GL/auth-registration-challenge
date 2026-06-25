@@ -1,4 +1,4 @@
-# Expongo la aplicación como callable WSGI para el servidor web
+# Exponer la aplicación como callable WSGI para el servidor web
 import os
 
 from django.core.wsgi import get_wsgi_application

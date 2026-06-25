@@ -14,7 +14,7 @@ from .models import LoginAttempt, User
 
 
 class RegisterView(CreateView):
-    """US01 — Registration with success message and redirect to login."""
+    # Muestro un mensaje de éxito y redirijo al login cuando el registro es válido
 
     model = User
     form_class = RegisterForm
@@ -28,7 +28,7 @@ class RegisterView(CreateView):
 
 
 class LoginView(BaseLoginView):
-    """US02 + US03 — Login with lockout, deactivation check, session enforcement."""
+    # Verifico si la cuenta está bloqueada o desactivada antes de permitir el login
 
     form_class = LoginForm
     template_name = "accounts/login.html"
@@ -58,7 +58,7 @@ class LoginView(BaseLoginView):
                 "Your account has been blocked for 2 hours due to "
                 "multiple failed login attempts.",
             )
-            # Unbound form so the generic error doesn't distract from the lockout message.
+            # Renderizo un formulario limpio para que el mensaje de bloqueo se lea sin distracción
             return render(
                 self.request, self.template_name, {"form": self.get_form_class()()}
             )
@@ -100,13 +100,13 @@ class LoginView(BaseLoginView):
 
 
 class HomeView(LoginRequiredMixin, TemplateView):
-    """Post-login dashboard — welcome message, logout link, deactivate button."""
+    # Página principal después de login con mensaje de bienvenida y opciones de cuenta
 
     template_name = "accounts/home.html"
 
 
 class DeactivateView(View):
-    """US03 — Soft-delete. No template; called via POST from the dashboard."""
+    # Desactivo la cuenta del usuario sin borrar sus datos de la base de datos
 
     def post(self, request):
         user = request.user

@@ -3,7 +3,7 @@ from django.db import models
 
 
 class UserManager(BaseUserManager):
-    """Manager that uses email as the unique identifier."""
+    # Defino el email como campo único para autenticar en lugar del username
 
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -22,7 +22,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
-    """Custom User model — email is the unique identifier, username is removed."""
+    # Heredo de AbstractUser y elimino username para que el login sea solo con email
 
     username = None
     first_name = None
@@ -42,7 +42,7 @@ class User(AbstractUser):
 
 
 class LoginAttempt(models.Model):
-    """Records each login attempt. Lockout: >= 3 failures in 2 hours."""
+    # Guardo cada intento de login para bloquear la cuenta tras 3 fallos en 2 horas
 
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="login_attempts"
@@ -56,7 +56,7 @@ class LoginAttempt(models.Model):
 
 
 class UserSession(models.Model):
-    """Enforces one active session per user (OneToOne)."""
+    # Relaciono una sola sesión por usuario con OneToOneField para evitar sesiones múltiples
 
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name="active_session"

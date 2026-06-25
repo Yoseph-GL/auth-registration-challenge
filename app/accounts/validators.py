@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 
 
 class PasswordStrengthValidator:
-    """US01 AC03: at least 8 chars, one letter, and one number."""
+    # Defino mis propias reglas: mínimo 8 caracteres, al menos una letra y un número
 
     def validate(self, password, user=None):
         if len(password) < 8:

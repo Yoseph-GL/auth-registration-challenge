@@ -1,4 +1,4 @@
-/* Auth Challenge — Dark theme, mobile-first. */
+/* Tema oscuro con diseño responsive mobile-first */
 
 :root {
   --bg: #3f3f46;
@@ -13,7 +13,7 @@
   --danger-hover: #dc2626;
 }
 
-/* Reset */
+/* Reinicio márgenes y paddings de todos los elementos */
 
 *,
 *::before,
@@ -23,7 +23,7 @@
   padding: 0;
 }
 
-/* Layout */
+/* Defino el layout base con fondo oscuro y fuente del sistema */
 
 body {
   font-family:
@@ -41,7 +41,7 @@ body {
   padding: 4rem 1rem;
 }
 
-/* Card */
+/* Tarjetas para formularios y dashboard */
 
 .card {
   background: var(--card);
@@ -61,7 +61,7 @@ body {
   margin-bottom: 1.5rem;
 }
 
-/* Form fields */
+/* Campos de formulario con borde y foco azul */
 
 .field {
   margin-bottom: 1rem;
@@ -97,7 +97,7 @@ body {
   box-shadow: 0 0 0 3px rgb(14 165 233 / 0.25);
 }
 
-/* Buttons */
+/* Botones con variantes primario y peligro */
 
 .btn {
   width: 100%;
@@ -131,7 +131,7 @@ body {
   background: var(--danger-hover);
 }
 
-/* Footer text */
+/* Texto inferior con enlace al login o registro */
 
 .footer-text {
   text-align: center;
@@ -149,7 +149,7 @@ body {
   color: var(--primary-hover);
 }
 
-/* Dashboard */
+/* Estilos del dashboard post-login */
 
 .home-card {
   text-align: center;
@@ -162,10 +162,6 @@ body {
 
 .home-card .subtitle {
   margin: 2rem 0;
-}
-
-.inline-form {
-  display: inline;
 }
 
 .btn-inline {
@@ -186,7 +182,7 @@ body {
   color: var(--primary-hover);
 }
 
-/* Flash messages */
+/* Mensajes flash de éxito y error */
 
 .messages {
   margin-bottom: 1.5rem;

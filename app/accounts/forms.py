@@ -5,7 +5,7 @@ from .models import User
 
 
 class RegisterForm(forms.ModelForm):
-    """US01: Email, full_name, and password with confirmation."""
+    # Pido email, nombre completo y contraseña con confirmación para el registro
 
     password = forms.CharField(widget=forms.PasswordInput, label="Password")
     password_confirm = forms.CharField(
@@ -17,7 +17,7 @@ class RegisterForm(forms.ModelForm):
         fields = ["email", "full_name"]
 
     def clean_full_name(self):
-        """Min 5 characters — enforced before touching the database."""
+        # Reviso que el nombre completo tenga al menos 5 caracteres antes de guardar
         full_name = self.cleaned_data.get("full_name", "")
         if len(full_name.strip()) < 5:
             raise forms.ValidationError(
@@ -26,7 +26,7 @@ class RegisterForm(forms.ModelForm):
         return full_name.strip()
 
     def clean_password(self):
-        """US01 AC03: delegate to Django's password validators (≥8 chars, 1 letter, 1 number)."""
+        # Dejo que Django valide la contraseña con las reglas definidas en settings
         password = self.cleaned_data.get("password")
         if password:
             from django.contrib.auth.password_validation import validate_password
@@ -50,7 +50,7 @@ class RegisterForm(forms.ModelForm):
 
 
 class LoginForm(AuthenticationForm):
-    """US02: Accepts email as the credential field instead of username."""
+    # Cambio el campo username por email para que el login use el correo
 
     username = forms.EmailField(
         label="Email",

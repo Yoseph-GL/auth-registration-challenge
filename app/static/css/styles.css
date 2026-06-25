@@ -37,9 +37,9 @@ body {
 }
 
 .container {
-    max-width: 28rem;
+    max-width: 32rem;
     margin: 0 auto;
-    padding: 3rem 1rem;
+    padding: 4rem 1rem;
 }
 
 
@@ -157,29 +157,27 @@ body {
 
 .home-card {
     text-align: center;
+    padding: 2.5rem;
 }
 
 .home-card h1 {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
-.home-card p {
-    color: var(--text-muted);
-    margin-bottom: 1.5rem;
+.home-card .subtitle {
+    margin-bottom: 2rem;
 }
 
-.logout-link {
-    color: var(--primary);
-    text-decoration: underline;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font: inherit;
-    padding: 0;
+.home-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
-.logout-link:hover {
-    color: var(--primary-hover);
+.home-actions .btn {
+    width: auto;
+    min-width: 10rem;
 }
 
 

@@ -6,18 +6,19 @@
 <div class="card home-card">
     <h1>Welcome {{ user.full_name }}!</h1>
 
-    <p>
-        To logout click
-        <form method="post" action="{% url 'logout' %}" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit" class="logout-link">here</button>
-        </form>
-    </p>
+    <p class="subtitle">To logout click the button below.</p>
 
-    <form method="post" action="{% url 'deactivate' %}">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Deactivate my account</button>
-    </form>
+    <div class="home-actions">
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Logout</button>
+        </form>
+
+        <form method="post" action="{% url 'deactivate' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Deactivate my account</button>
+        </form>
+    </div>
 </div>
 
 {% endblock %}

@@ -164,6 +164,7 @@ body {
   margin: 2rem 0;
 }
 
+/* Botón que se ve como enlace de texto — usado en el "here" del logout */
 .btn-inline {
   display: inline;
   width: auto;

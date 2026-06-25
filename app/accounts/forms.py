@@ -29,6 +29,7 @@ class RegisterForm(forms.ModelForm):
         # Dejar que Django valide la contraseña con las reglas de settings
         password = self.cleaned_data.get("password")
         if password:
+            # Import aquí para evitar ciclo de imports con accounts.validators
             from django.contrib.auth.password_validation import validate_password
             validate_password(password, self.instance)
         return password
@@ -56,5 +57,6 @@ class LoginForm(AuthenticationForm):
 
     username = forms.EmailField(
         label="Email",
+        # Poner autofocus para que el cursor aparezca directo en el campo de email
         widget=forms.EmailInput(attrs={"autofocus": True}),
     )

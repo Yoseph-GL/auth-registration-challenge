@@ -7,4 +7,5 @@ class AccountsConfig(AppConfig):
 
     def ready(self):
         # Conectar las señales para que Django ejecute el handler al iniciar sesión
+        # El import vacío es a propósito: al cargar el módulo se registran los @receiver
         import accounts.signals  # noqa: F401

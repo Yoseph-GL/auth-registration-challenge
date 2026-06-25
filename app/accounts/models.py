@@ -17,6 +17,7 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
+        # Forzar permisos de admin para que createsuperuser funcione sin pedirlos
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         return self.create_user(email, password, **extra_fields)
@@ -25,6 +26,7 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     # Heredar de AbstractUser y eliminar username para que el login sea solo con email
 
+    # Anular estos campos con None para que Django no los cree como columnas
     username = None
     first_name = None
     last_name = None
@@ -33,6 +35,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, max_length=254)
     full_name = models.CharField(max_length=150)
 
+    # USERNAME_FIELD: campo que identifica al usuario; REQUIRED_FIELDS: campos extra que pide createsuperuser
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["full_name"]
 
@@ -62,6 +65,7 @@ class UserSession(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name="active_session"
     )
+    # Las session keys de Django miden 32 chars; 40 da margen por si cambia el backend
     session_key = models.CharField(max_length=40)
 
     def __str__(self):

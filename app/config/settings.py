@@ -7,6 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Fail-fast: forzar crash si no existe la variable en el entorno
 SECRET_KEY = os.environ['SECRET_KEY']
 
+# Activar debug solo si la variable de entorno lo dice explícitamente
 DEBUG = os.environ.get('DEBUG', '') == 'True'
 
 # Hosts permitidos desde variable de entorno; defaults para desarrollo local
@@ -31,6 +32,8 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    # SingleSessionMiddleware va después de AuthenticationMiddleware
+    # para tener request.user disponible al validar la sesión
     'accounts.middleware.SingleSessionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -113,4 +116,5 @@ LOGOUT_REDIRECT_URL = 'login'
 
 # Configurar la sesión para que expire a los 15 minutos de inactividad
 SESSION_COOKIE_AGE = 15 * 60  # 15 minutos de inactividad
+# Renovar el expiry en cada request; sin esto la sesión expira a los 15 min fijos
 SESSION_SAVE_EVERY_REQUEST = True

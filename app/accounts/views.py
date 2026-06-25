@@ -33,6 +33,7 @@ class LoginView(BaseLoginView):
     form_class = LoginForm
     template_name = "accounts/login.html"
 
+    # Constantes del bloqueo: 3 fallos en 2 horas congelan la cuenta
     _LOCKOUT_HOURS = 2
     _LOCKOUT_MAX_FAILURES = 3
     _LOCKOUT_MESSAGE = (
@@ -59,6 +60,7 @@ class LoginView(BaseLoginView):
         return failures.count() >= self._LOCKOUT_MAX_FAILURES
 
     def _render_clean_form(self, request):
+        # Mostrar formulario vacío tras bloqueo para no enseñar errores acumulados
         return render(
             request, self.template_name, {"form": self.get_form_class()()}
         )
@@ -85,7 +87,7 @@ class LoginView(BaseLoginView):
         return super().form_invalid(form)
 
     def dispatch(self, request, *args, **kwargs):
-        # Bloquear el request desde el inicio si la cuenta está desactivada o en lockout
+        # Validar desactivación y bloqueo antes de cualquier intento de login
         email = request.POST.get("username", "")
         if email:
             user = self._get_user_or_none(email)
@@ -109,11 +111,14 @@ class HomeView(LoginRequiredMixin, TemplateView):
 
 class DeactivateView(View):
     # Desactivar la cuenta sin borrar los datos del usuario
+    # Usa View simple en vez de LoginRequiredMixin: el guard de is_authenticated
+    # redirige al login sin necesidad de un 302 forzado por el mixin
 
     def post(self, request):
         user = request.user
         if user.is_authenticated:
             user.is_active = False
+            # Guardar solo is_active para no tocar otros campos del usuario
             user.save(update_fields=["is_active"])
             messages.success(request, "Your account has been deactivated.")
         return redirect("login")

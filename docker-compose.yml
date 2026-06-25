@@ -10,12 +10,14 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
+      # Mapear al 5435 para no chocar con otra instancia local de PostgreSQL
       - "127.0.0.1:5435:5432"
     healthcheck:
+      # Esperar a que la BD acepte conexiones antes de levantar el web
       test: ["CMD-SHELL", "pg_isready -U $${DB_USER:-django} -d $${DB_NAME:-auth_challenge}"]
       interval: 5s
       retries: 5
-      start_period: 10s
+      start_period: 10s  # dar margen al primer arranque de la BD
 
   web:
     build: .
@@ -23,6 +25,7 @@ services:
     volumes:
       - ./app:/app
     ports:
+      # Usar 8003 en la máquina host para evitar conflictos con otros proyectos
       - "127.0.0.1:8003:8000"
     env_file:
       - ./app/.env

@@ -8,8 +8,10 @@
 
     <p class="subtitle">
         To logout click
+        {# Botón fuera del form usa el atributo form= para submitear el form oculto #}
         <button type="submit" form="logout-form" class="btn btn-inline">here</button>
     </p>
+    {# Form oculto con el CSRF token que el botón "here" dispara #}
     <form id="logout-form" method="post" action="{% url 'logout' %}" hidden>
         {% csrf_token %}
     </form>

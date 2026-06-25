@@ -25,6 +25,8 @@ class User(AbstractUser):
     """Custom User model — email is the unique identifier, username is removed."""
 
     username = None
+    groups = None
+    user_permissions = None
     email = models.EmailField(unique=True, max_length=254)
     full_name = models.CharField(max_length=150)
 

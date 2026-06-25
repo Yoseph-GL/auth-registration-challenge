@@ -54,7 +54,7 @@ desktop.ini
 *.swo
 *~
 
-# Project documentation (auto-generated)
+# Project documentation
 CLAUDE.md
 DEV_GUIDE.md
 ROADMAP.md

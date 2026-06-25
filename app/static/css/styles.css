@@ -1,0 +1,208 @@
+/* Tema oscuro con diseño responsive mobile-first */
+
+:root {
+  --bg: #3f3f46;
+  --card: #27272a;
+  --border: #52525b;
+  --primary: #0ea5e9;
+  --primary-hover: #0284c7;
+  --text: #ffffff;
+  --text-muted: #d1d5db;
+  --placeholder: #71717a;
+  --danger: #ef4444;
+  --danger-hover: #dc2626;
+}
+
+/* Reinicio márgenes y paddings de todos los elementos */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Defino el layout base con fondo oscuro y fuente del sistema */
+
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: 4rem 1rem;
+}
+
+/* Tarjetas para formularios y dashboard */
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 2rem;
+}
+
+.card h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.card .subtitle {
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+/* Campos de formulario con borde y foco azul */
+
+.field {
+  margin-bottom: 1rem;
+}
+
+.field label {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.field input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  color: var(--text);
+  font-size: 0.9375rem;
+  outline: none;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+.field input::placeholder {
+  color: var(--placeholder);
+}
+
+.field input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgb(14 165 233 / 0.25);
+}
+
+/* Botones con variantes primario y peligro */
+
+.btn {
+  width: 100%;
+  padding: 0.625rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-top: 0.5rem;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+  width: auto;
+  padding: 0.5rem 1.5rem;
+}
+
+.btn-danger:hover {
+  background: var(--danger-hover);
+}
+
+/* Texto inferior con enlace al login o registro */
+
+.footer-text {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-top: 1.25rem;
+}
+
+.footer-text a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.footer-text a:hover {
+  color: var(--primary-hover);
+}
+
+/* Estilos del dashboard post-login */
+
+.home-card {
+  text-align: center;
+  padding: 2.5rem;
+}
+
+.home-card h1 {
+  margin-bottom: 0.5rem;
+}
+
+.home-card .subtitle {
+  margin: 2rem 0;
+}
+
+.btn-inline {
+  display: inline;
+  width: auto;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--primary);
+  font-size: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  vertical-align: baseline;
+}
+
+.btn-inline:hover {
+  color: var(--primary-hover);
+}
+
+/* Mensajes flash de éxito y error */
+
+.messages {
+  margin-bottom: 1.5rem;
+}
+
+.msg {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.msg-error {
+  background: rgb(239 68 68 / 0.15);
+  color: #f87171;
+  border: 1px solid rgb(239 68 68 / 0.3);
+}
+
+.msg-success {
+  background: rgb(14 165 233 / 0.15);
+  color: #7dd3fc;
+  border: 1px solid rgb(14 165 233 / 0.3);
+}

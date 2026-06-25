@@ -31,6 +31,7 @@ yarn-error.log
 # Environment & secrets
 .env
 .env.*
+!.env.example
 
 # Docker
 docker-compose.override.yml
@@ -52,3 +53,9 @@ desktop.ini
 *.swp
 *.swo
 *~
+
+# Project documentation
+CLAUDE.md
+DEV_GUIDE.md
+ROADMAP.md
+SCHEMA.md

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<div class="card home-card">
+    <h1>Welcome {{ user.full_name }}!</h1>
+
+    <p class="subtitle">
+        To logout click
+        <button type="submit" form="logout-form" class="btn btn-inline">here</button>
+    </p>
+    <form id="logout-form" method="post" action="{% url 'logout' %}" hidden>
+        {% csrf_token %}
+    </form>
+
+    <form method="post" action="{% url 'deactivate' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Deactivate my account</button>
+    </form>
+</div>
+
+{% endblock %}

@@ -4,7 +4,7 @@ services:
     environment:
       POSTGRES_DB: ${DB_NAME:-auth_challenge}
       POSTGRES_USER: ${DB_USER:-django}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-django_secret}
     env_file:
       - ./app/.env
     volumes:

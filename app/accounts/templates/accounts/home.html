@@ -8,7 +8,10 @@
 
     <p>
         To logout click
-        <a href="{% url 'logout' %}" class="logout-link">here</a>
+        <form method="post" action="{% url 'logout' %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="logout-link">here</button>
+        </form>
     </p>
 
     <form method="post" action="{% url 'deactivate' %}">

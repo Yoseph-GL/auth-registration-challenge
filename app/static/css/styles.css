@@ -171,6 +171,11 @@ body {
 .logout-link {
     color: var(--primary);
     text-decoration: underline;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    padding: 0;
 }
 
 .logout-link:hover {

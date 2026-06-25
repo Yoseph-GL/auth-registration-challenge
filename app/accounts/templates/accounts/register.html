@@ -7,6 +7,16 @@
     <h1>Register</h1>
     <p class="subtitle">Create a new account.</p>
 
+    {% if form.errors %}
+    <div class="msg msg-error">
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
     <form method="post">
         {% csrf_token %}
 

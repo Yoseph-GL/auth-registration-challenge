@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView as BaseLoginView
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
@@ -100,7 +101,7 @@ class LoginView(BaseLoginView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class HomeView(TemplateView):
+class HomeView(LoginRequiredMixin, TemplateView):
     """Post-login dashboard — welcome message, logout link, deactivate button."""
 
     template_name = "accounts/home.html"

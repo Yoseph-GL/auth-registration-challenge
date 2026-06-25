@@ -13,7 +13,7 @@ from .models import LoginAttempt, User
 
 
 class RegisterView(CreateView):
-    """US01: Registration with success message and redirect to login."""
+    """US01 — Registration with success message and redirect to login."""
 
     model = User
     form_class = RegisterForm
@@ -27,23 +27,22 @@ class RegisterView(CreateView):
 
 
 class LoginView(BaseLoginView):
-    """US02: Login with lockout (3 fails / 2h), deactivation check (US03)."""
+    """US02 + US03 — Login with lockout, deactivation check, session enforcement."""
 
     form_class = LoginForm
     template_name = "accounts/login.html"
 
+    # -- successful login --------------------------------------------------
+
     def form_valid(self, form):
-        """Wipe failed-attempt history on successful login."""
         user = form.get_user()
         LoginAttempt.objects.filter(user=user).delete()
-        messages.success(
-            self.request,
-            f"Welcome {user.full_name}! To logout click here",
-        )
+        messages.success(self.request, "Login successful.")
         return super().form_valid(form)
 
+    # -- failed login ------------------------------------------------------
+
     def form_invalid(self, form):
-        """Log the failed attempt. If >= 3 in the last 2 hours, show lockout."""
         email = self.request.POST.get("username", "")
         try:
             user = User.objects.get(email=email)
@@ -64,8 +63,9 @@ class LoginView(BaseLoginView):
             )
         return super().form_invalid(form)
 
+    # -- pre-form checks (deactivation / existing lockout) ------------------
+
     def dispatch(self, request, *args, **kwargs):
-        """Pre-form checks: deactivated account or existing lockout → block."""
         email = request.POST.get("username", "")
         if email:
             try:
@@ -101,14 +101,13 @@ class LoginView(BaseLoginView):
 
 
 class HomeView(TemplateView):
-    """Post-login landing page with welcome message and logout link."""
+    """Post-login dashboard — welcome message, logout link, deactivate button."""
 
     template_name = "accounts/home.html"
 
 
 class DeactivateView(View):
-    """US03: Soft-delete — sets is_active=False, keeps data in the DB.
-    No template needed; called via POST from the dashboard."""
+    """US03 — Soft-delete. No template; called via POST from the dashboard."""
 
     def post(self, request):
         user = request.user

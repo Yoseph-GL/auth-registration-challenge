@@ -22,7 +22,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
-    """Custom User: email replaces username as the unique identifier."""
+    """Custom User model — email is the unique identifier, username is removed."""
 
     username = None
     email = models.EmailField(unique=True, max_length=254)
@@ -38,7 +38,7 @@ class User(AbstractUser):
 
 
 class LoginAttempt(models.Model):
-    """Records each login attempt. Lockout fires at >= 3 failures in 2 hours."""
+    """Records each login attempt. Lockout: >= 3 failures in 2 hours."""
 
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="login_attempts"
@@ -52,7 +52,7 @@ class LoginAttempt(models.Model):
 
 
 class UserSession(models.Model):
-    """One-to-one with User: enforces a single active session per user."""
+    """Enforces one active session per user (OneToOne)."""
 
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name="active_session"

@@ -25,6 +25,14 @@ class RegisterForm(forms.ModelForm):
             )
         return full_name.strip()
 
+    def clean_password(self):
+        """US01 AC03: delegate to Django's password validators (≥8 chars, 1 letter, 1 number)."""
+        password = self.cleaned_data.get("password")
+        if password:
+            from django.contrib.auth.password_validation import validate_password
+            validate_password(password, self.instance)
+        return password
+
     def clean(self):
         cleaned = super().clean()
         pw1 = cleaned.get("password")

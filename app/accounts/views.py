@@ -62,6 +62,11 @@ class LoginView(BaseLoginView):
                 "Your account has been blocked for 2 hours due to "
                 "multiple failed login attempts.",
             )
+            # Render with an unbound form so the generic "invalid credentials"
+            # error does not distract from the lockout message.
+            return render(
+                self.request, self.template_name, {"form": self.get_form_class()()}
+            )
         return super().form_invalid(form)
 
     # -- pre-form checks (deactivation / existing lockout) ------------------
@@ -81,7 +86,7 @@ class LoginView(BaseLoginView):
                         "Please contact support.",
                     )
                     return render(
-                        request, self.template_name, {"form": self.get_form()}
+                        request, self.template_name, {"form": self.get_form_class()()}
                     )
 
                 cutoff = timezone.now() - timedelta(hours=2)
@@ -95,7 +100,7 @@ class LoginView(BaseLoginView):
                         "multiple failed login attempts.",
                     )
                     return render(
-                        request, self.template_name, {"form": self.get_form()}
+                        request, self.template_name, {"form": self.get_form_class()()}
                     )
 
         return super().dispatch(request, *args, **kwargs)

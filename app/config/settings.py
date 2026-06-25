@@ -5,12 +5,14 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Fail-fast: forzar crash si no existe la variable en el entorno
-SECRET_KEY = os.environ["SECRET_KEY"]
+SECRET_KEY = os.environ['SECRET_KEY']
 
-DEBUG = os.environ.get("DEBUG", "") == "True"
+DEBUG = os.environ.get('DEBUG', '') == 'True'
 
-# Agregar los hosts permitidos para desarrollo local y Docker
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
+# Hosts permitidos desde variable de entorno; defaults para desarrollo local
+ALLOWED_HOSTS = os.environ.get(
+    'ALLOWED_HOSTS', 'localhost,127.0.0.1,0.0.0.0'
+).split(',')
 
 # Dejar el admin de Django activo para comandos como createsuperuser
 INSTALLED_APPS = [
@@ -94,7 +96,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Agregar el directorio static para los archivos CSS e imágenes
 STATICFILES_DIRS = [BASE_DIR / 'static']
@@ -110,5 +112,5 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
 
 # Configurar la sesión para que expire a los 15 minutos de inactividad
-SESSION_COOKIE_AGE = 900
+SESSION_COOKIE_AGE = 15 * 60  # 15 minutos de inactividad
 SESSION_SAVE_EVERY_REQUEST = True

@@ -33,6 +33,36 @@ class LoginView(BaseLoginView):
     form_class = LoginForm
     template_name = "accounts/login.html"
 
+    _LOCKOUT_HOURS = 2
+    _LOCKOUT_MAX_FAILURES = 3
+    _LOCKOUT_MESSAGE = (
+        "Your account has been blocked for 2 hours due to "
+        "multiple failed login attempts."
+    )
+    _DEACTIVATED_MESSAGE = (
+        "This account has been deactivated. Please contact support."
+    )
+
+    def _get_user_or_none(self, email):
+        # Buscar el usuario por email; retornar None si no existe
+        try:
+            return User.objects.get(email=email)
+        except User.DoesNotExist:
+            return None
+
+    def _is_locked_out(self, user):
+        # Verificar si el usuario superó el límite de fallos en la ventana de tiempo
+        cutoff = timezone.now() - timedelta(hours=self._LOCKOUT_HOURS)
+        failures = LoginAttempt.objects.filter(
+            user=user, success=False, timestamp__gte=cutoff
+        )
+        return failures.count() >= self._LOCKOUT_MAX_FAILURES
+
+    def _render_clean_form(self, request):
+        return render(
+            request, self.template_name, {"form": self.get_form_class()()}
+        )
+
     def form_valid(self, form):
         user = form.get_user()
         # Limpiar historial de fallos tras un login exitoso para evitar bloqueos falsos
@@ -42,62 +72,31 @@ class LoginView(BaseLoginView):
 
     def form_invalid(self, form):
         email = self.request.POST.get("username", "")
-        try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
+        user = self._get_user_or_none(email)
+        if user is None:
             return super().form_invalid(form)
 
-        # Registrar este fallo antes de contar el total para aplicar el lockout si es necesario
+        # Registrar este fallo antes de contar el total para aplicar el lockout
         LoginAttempt.objects.create(user=user, success=False)
 
-        cutoff = timezone.now() - timedelta(hours=2)
-        failures = LoginAttempt.objects.filter(
-            user=user, success=False, timestamp__gte=cutoff
-        )
-        if failures.count() >= 3:
-            messages.error(
-                self.request,
-                "Your account has been blocked for 2 hours due to "
-                "multiple failed login attempts.",
-            )
-            # Mostrar un formulario limpio para que el mensaje de bloqueo se lea sin distracción
-            return render(
-                self.request, self.template_name, {"form": self.get_form_class()()}
-            )
+        if self._is_locked_out(user):
+            messages.error(self.request, self._LOCKOUT_MESSAGE)
+            return self._render_clean_form(self.request)
         return super().form_invalid(form)
 
     def dispatch(self, request, *args, **kwargs):
         # Bloquear el request desde el inicio si la cuenta está desactivada o en lockout
         email = request.POST.get("username", "")
         if email:
-            try:
-                user = User.objects.get(email=email)
-            except User.DoesNotExist:
-                pass
-            else:
+            user = self._get_user_or_none(email)
+            if user is not None:
                 if not user.is_active:
-                    messages.error(
-                        request,
-                        "This account has been deactivated. "
-                        "Please contact support.",
-                    )
-                    return render(
-                        request, self.template_name, {"form": self.get_form_class()()}
-                    )
+                    messages.error(request, self._DEACTIVATED_MESSAGE)
+                    return self._render_clean_form(request)
 
-                cutoff = timezone.now() - timedelta(hours=2)
-                failures = LoginAttempt.objects.filter(
-                    user=user, success=False, timestamp__gte=cutoff
-                )
-                if failures.count() >= 3:
-                    messages.error(
-                        request,
-                        "Your account has been blocked for 2 hours due to "
-                        "multiple failed login attempts.",
-                    )
-                    return render(
-                        request, self.template_name, {"form": self.get_form_class()()}
-                    )
+                if self._is_locked_out(user):
+                    messages.error(request, self._LOCKOUT_MESSAGE)
+                    return self._render_clean_form(request)
 
         return super().dispatch(request, *args, **kwargs)
 

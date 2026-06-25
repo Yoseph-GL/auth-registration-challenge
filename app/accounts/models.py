@@ -53,7 +53,7 @@ class LoginAttempt(models.Model):
 
     def __str__(self):
         status = "OK" if self.success else "FAIL"
-        return f"{self.user.email} — {status} @ {self.timestamp}"
+        return f"{self.user.email} -- {status} @ {self.timestamp}"
 
 
 class UserSession(models.Model):
